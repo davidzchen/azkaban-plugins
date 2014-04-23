@@ -1,4 +1,3 @@
-
 def cmdCaller = { commandln ->
   def stdout = new ByteArrayOutputStream()
   exec {
@@ -42,71 +41,6 @@ configure(allprojects) { project ->
     compile('com.linkedin.azkaban:azkaban:2.5.0')
     compile('log4j:log4j:1.2.16')
     testCompile('junit:junit:4.11')
-  }
-}
-
-project('hadoopsecuritymanager') {
-  dependencies {
-    compile('org.apache.hadoop:hadoop-core:1.2.1')
-    compile('org.apache.hive:hive-common:0.12.0')
-    compile('org.apache.hive:hive-metastore:0.12.0')
-    compile('org.apache.thrift:libthrift:0.9.0')
-  }
-}
-
-project('hdfsviewer') {
-  dependencies {
-    compile(project(':hadoopsecuritymanager'))
-    compile('org.apache.hadoop:hadoop-core:1.2.1')
-    compile('org.apache.avro:avro:1.7.4')
-    compile('org.mongodb:mongo-java-driver:2.10.1')
-    compile('com.twitter:parquet-avro:1.3.2')
-    compile('com.twitter:parquet-hadoop-bundle:1.3.2')
-    compile('org.codehaus.jackson:jackson-core-asl:1.9.5')
-    compile('org.codehaus.jackson:jackson-mapper-asl:1.9.5')
-    compile('javax.servlet:servlet-api:2.5')
-    compile('org.xerial.snappy:snappy-java:1.0.5')
-    compile('voldemort:voldemort:0.96')
-  }
-}
-
-project('jobtype') {
-  dependencies {
-    compile(project(':hadoopsecuritymanager'))
-    compile('commons-lang:commons-lang:2.4')
-    compile('org.apache.hadoop:hadoop-core:1.2.1')
-    compile('org.apache.hive:hive-common:0.12.0')
-    compile('org.apache.hive:hive-cli:0.12.0')
-    compile('org.apache.hive:hive-common:0.12.0')
-    compile('org.apache.hive:hive-exec:0.12.0')
-    compile('org.apache.hive:hive-metastore:0.12.0')
-    compile('org.apache.hive:hive-service:0.12.0')
-    compile('org.apache.pig:pig:0.12.0')
-  }
-}
-
-project('javaviewer') {
-  dependencies {
-    compile(project(':hadoopsecuritymanager'))
-    compile(project(':jobtype'))
-    compile('javax.servlet:servlet-api:2.5')
-  }
-}
-
-project('jobsummary') {
-  dependencies {
-    compile(project(':hadoopsecuritymanager'))
-    compile('javax.servlet:servlet-api:2.5')
-  }
-}
-
-
-project('pigvisualizer') {
-  dependencies {
-    compile(project(':hadoopsecuritymanager'))
-    compile(project(':jobtype'))
-    compile('javax.servlet:servlet-api:2.5')
-    compile('org.apache.pig:pig:0.12.0')
   }
 }
 

@@ -1,0 +1,4 @@
+task distReportal(dependsOn: [':reportal:reportal-jobtypes',
+                              ':reportal:reportal-viewer']) {
+  println('distReportal')
+}
