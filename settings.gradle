@@ -1,0 +1,6 @@
+include 'hadoopsecuritymanager'
+include 'hdfsviewer'
+include 'javaviewer'
+include 'jobsummary'
+include 'jobtype'
+include 'pigvisualizer'
