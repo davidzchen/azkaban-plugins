@@ -1,4 +1,10 @@
 dependencies {
   compile(project(':hadoopsecuritymanager'))
   compile(project(':reportal:reportal-common'))
+  compile('commons-io:commons-io:2.4')
+  compile('commons-lang:commons-lang:2.4')
+  compile('joda-time:joda-time:2.0')
+  compile('javax.servlet:servlet-api:2.5')
+  compile('javax.mail:mail:1.4.5')
+  compile('org.apache.velocity:velocity-tools:2.0')
 }

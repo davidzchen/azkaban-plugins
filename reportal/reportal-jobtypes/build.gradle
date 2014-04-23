@@ -1,6 +1,8 @@
 dependencies {
   compile(project(':hadoopsecuritymanager'))
   compile(project(':reportal:reportal-common'))
+  compile('commons-io:commons-io:2.4')
+  compile('commons-dbcp:commons-dbcp:1.4')
   compile('org.apache.hadoop:hadoop-core:1.2.1')
   compile('org.apache.hive:hive-common:0.12.0')
   compile('org.apache.hive:hive-cli:0.12.0')

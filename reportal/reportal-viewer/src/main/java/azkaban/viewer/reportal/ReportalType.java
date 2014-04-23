@@ -24,7 +24,6 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
-import azkaban.reportal.util.Reportal;
 import azkaban.user.User;
 import azkaban.utils.Props;
 

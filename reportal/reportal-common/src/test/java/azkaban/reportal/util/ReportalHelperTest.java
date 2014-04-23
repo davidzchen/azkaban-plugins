@@ -22,7 +22,7 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-import azkaban.reportal.util.Reportal;
+import azkaban.reportal.util.Constants;
 import azkaban.reportal.util.ReportalHelper;
 
 public class ReportalHelperTest {
