@@ -1,0 +1,6 @@
+dependencies {
+  compile(project(':hadoopsecuritymanager'))
+  compile(project(':jobtype'))
+  compile('javax.servlet:servlet-api:2.5')
+  compile('org.apache.pig:pig:0.12.0')
+}

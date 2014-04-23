@@ -1,0 +1,5 @@
+dependencies {
+  compile(project(':hadoopsecuritymanager'))
+  compile(project(':jobtype'))
+  compile('javax.servlet:servlet-api:2.5')
+}

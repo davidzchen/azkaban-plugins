@@ -1,0 +1,14 @@
+dependencies {
+  compile(project(':hadoopsecuritymanager'))
+  compile('org.apache.hadoop:hadoop-core:1.2.1')
+  compile('org.apache.avro:avro:1.7.4')
+  compile('org.mongodb:mongo-java-driver:2.10.1')
+  compile('com.twitter:parquet-avro:1.3.2')
+  compile('com.twitter:parquet-hadoop-bundle:1.3.2')
+  compile('org.codehaus.jackson:jackson-core-asl:1.9.5')
+  compile('org.codehaus.jackson:jackson-mapper-asl:1.9.5')
+  compile('javax.servlet:servlet-api:2.5')
+  compile('org.xerial.snappy:snappy-java:1.0.5')
+  compile('voldemort:voldemort:0.96')
+}
+
