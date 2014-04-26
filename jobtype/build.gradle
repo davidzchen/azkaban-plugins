@@ -11,3 +11,6 @@ dependencies {
   compile('org.apache.pig:pig:0.12.0')
 }
 
+task dist(dependsOn: 'jar') {
+  println 'dist jobtype'
+}

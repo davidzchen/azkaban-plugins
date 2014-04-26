@@ -2,3 +2,7 @@ dependencies {
   compile(project(':hadoopsecuritymanager'))
   compile('javax.servlet:servlet-api:2.5')
 }
+
+task dist(dependsOn: 'jar') {
+  println 'dist jobsummary'
+}

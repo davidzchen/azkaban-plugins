@@ -1,6 +1,19 @@
+apply plugin: 'lesscss'
+
 dependencies {
   compile(project(':hadoopsecuritymanager'))
   compile(project(':jobtype'))
   compile('javax.servlet:servlet-api:2.5')
   compile('org.apache.pig:pig:0.12.0')
+}
+
+lesscss {
+  source = fileTree('src/main/less') {
+    include 'pigvisualizer.less'
+  }
+  dest = 'build/web/css'
+}
+
+task dist(dependsOn: ['jar', 'lesscss']) {
+  println 'dist pigvisualizer'
 }

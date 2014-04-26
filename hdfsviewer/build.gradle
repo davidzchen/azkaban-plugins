@@ -1,3 +1,7 @@
+ext.baseName = 'azkaban'
+ext.pluginName = 'hdfsviewer'
+ext.version = '2.5.1'
+
 dependencies {
   compile(project(':hadoopsecuritymanager'))
   compile('org.apache.hadoop:hadoop-core:1.2.1')
@@ -12,3 +16,30 @@ dependencies {
   compile('voldemort:voldemort:0.96')
 }
 
+ext.packageDir = 'build/package/' + baseName + '-' + pluginName
+ext.packageLibDir = packageDir + '/lib'
+ext.packageConfDir = packageDir + '/conf'
+task dist(dependsOn: 'jar') {
+  mkdir packageDir
+  mkdir packageLibDir
+  mkdir packageConfDir
+  copy {
+    from('build/libs')
+    into packageLibDir
+  }
+  copy {
+    from configurations.compile
+    into packageLibDir
+  }
+  copy {
+    from('conf')
+    into packageConfDir
+  }
+
+  extension = 'tar.gz'
+  compression = Compression.GZIP
+  basedir = baseName + '-' + pluginName + '-' version
+  into(basedir) {
+    from packageDir
+  }
+}

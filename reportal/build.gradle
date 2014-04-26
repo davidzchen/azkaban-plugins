@@ -1,4 +1,4 @@
-task distReportal(dependsOn: [':reportal:reportal-jobtypes',
-                              ':reportal:reportal-viewer']) {
-  println('distReportal')
+task dist(dependsOn: [':reportal:reportal-jobtypes:jar',
+                      ':reportal:reportal-viewer:jar']) {
+  println('dist reportal')
 }
