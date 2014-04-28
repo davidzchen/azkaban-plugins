@@ -1,9 +1,42 @@
+apply plugin: 'dustjs'
+
+ext.baseName = 'azkaban'
+ext.pluginName = 'javaviewer'
+ext.version = '2.5.1'
+
 dependencies {
   compile(project(':hadoopsecuritymanager'))
   compile(project(':jobtype'))
   compile('javax.servlet:servlet-api:2.5')
 }
 
-task dist(dependsOn: 'jar') {
-  println 'dist javaviewer'
+dustjs {
+  source = fileTree('src/main/tl')
+  dest = 'build/web/js'
+}
+
+ext.packageName = baseName + '-' + pluginName
+ext.packageDir = 'build/package/' + packageName
+ext.packageLibDir = packageDir + '/lib'
+
+task copy(type: Copy, dependsOn: ['build', 'dustjs']) {
+  mkdir packageDir
+  mkdir packageLibDir
+  copy {
+    from('build/libs')
+    into packageLibDir
+  }
+  copy {
+    from configurations.compile
+    into packageLibDir
+  }
+}
+
+task dist(type: Tar, dependsOn: 'copy') {
+  extension = 'tar.gz'
+  compression = Compression.GZIP
+  basedir = packageName + '-' + version
+  into(basedir) {
+    from packageDir
+  }
 }

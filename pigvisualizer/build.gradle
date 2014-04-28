@@ -1,4 +1,9 @@
 apply plugin: 'lesscss'
+apply plugin: 'dustjs'
+
+ext.baseName = 'azkaban'
+ext.pluginName = 'pigvisualizer'
+ext.version = '2.5.1'
 
 dependencies {
   compile(project(':hadoopsecuritymanager'))
@@ -14,6 +19,33 @@ lesscss {
   dest = 'build/web/css'
 }
 
-task dist(dependsOn: ['jar', 'lesscss']) {
-  println 'dist pigvisualizer'
+dustjs {
+  source = fileTree('src/main/tl')
+  dest = 'build/web/js'
+}
+
+ext.packageName = baseName + '-' + pluginName
+ext.packageDir = 'build/package/' + packageName
+ext.packageLibDir = packageDir + '/lib'
+
+task copy(type: Copy, dependsOn: ['build', 'dustjs', 'lesscss']) {
+  mkdir packageDir
+  mkdir packageLibDir
+  copy {
+    from('build/libs')
+    into packageLibDir
+  }
+  copy {
+    from configurations.compile
+    into packageLibDir
+  }
+}
+
+task dist(type: Tar, dependsOn: 'copy') {
+  extension = 'tar.gz'
+  compression = Compression.GZIP
+  basedir = packageName + '-' + version
+  into(basedir) {
+    from packageDir
+  }
 }

@@ -16,13 +16,13 @@ dependencies {
   compile('voldemort:voldemort:0.96')
 }
 
-ext.packageDir = 'build/package/' + baseName + '-' + pluginName
+ext.packageName = baseName + '-' + pluginName
+ext.packageDir = 'build/package/' + packageName
 ext.packageLibDir = packageDir + '/lib'
-ext.packageConfDir = packageDir + '/conf'
-task dist(dependsOn: 'jar') {
+
+task copy(type: Copy, dependsOn: 'build') {
   mkdir packageDir
   mkdir packageLibDir
-  mkdir packageConfDir
   copy {
     from('build/libs')
     into packageLibDir
@@ -31,14 +31,12 @@ task dist(dependsOn: 'jar') {
     from configurations.compile
     into packageLibDir
   }
-  copy {
-    from('conf')
-    into packageConfDir
-  }
+}
 
+task dist(type: Tar, dependsOn: 'copy') {
   extension = 'tar.gz'
   compression = Compression.GZIP
-  basedir = baseName + '-' + pluginName + '-' version
+  basedir = packageName + '-' + version
   into(basedir) {
     from packageDir
   }

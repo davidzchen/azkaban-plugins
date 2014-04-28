@@ -1,3 +1,7 @@
+ext.baseName = 'azkaban'
+ext.pluginName = 'jobtype'
+ext.version = '2.5.1'
+
 dependencies {
   compile(project(':hadoopsecuritymanager'))
   compile('commons-lang:commons-lang:2.4')
@@ -11,6 +15,28 @@ dependencies {
   compile('org.apache.pig:pig:0.12.0')
 }
 
-task dist(dependsOn: 'jar') {
-  println 'dist jobtype'
+ext.packageName = baseName + '-' + pluginName
+ext.packageDir = 'build/package/' + packageName
+ext.packageLibDir = packageDir + '/lib'
+
+task copy(type: Copy, dependsOn: 'build') {
+  mkdir packageDir
+  mkdir packageLibDir
+  copy {
+    from('build/libs')
+    into packageLibDir
+  }
+  copy {
+    from configurations.compile
+    into packageLibDir
+  }
+}
+
+task dist(type: Tar, dependsOn: 'copy') {
+  extension = 'tar.gz'
+  compression = Compression.GZIP
+  basedir = packageName + '-' + version
+  into(basedir) {
+    from packageDir
+  }
 }

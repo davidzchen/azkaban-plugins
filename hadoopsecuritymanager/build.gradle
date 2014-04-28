@@ -9,9 +9,11 @@ dependencies {
   compile('org.apache.thrift:libthrift:0.9.0')
 }
 
-ext.packageDir = 'build/package/' + baseName + '-' + pluginName
+ext.packageName = baseName + '-' + pluginName
+ext.packageDir = 'build/package/' + packageName
 ext.packageLibDir = packageDir + '/lib'
-task dist(type: Tar, dependsOn: 'jar') {
+
+task copy(type: Copy, dependsOn: 'build') {
   mkdir packageDir
   mkdir packageLibDir
   copy {
@@ -22,10 +24,12 @@ task dist(type: Tar, dependsOn: 'jar') {
     from configurations.compile
     into packageLibDir
   }
+}
 
+task dist(type: Tar, dependsOn: 'copy') {
   extension = 'tar.gz'
   compression = Compression.GZIP
-  basedir = baseName + '-' + pluginName + '-' + version
+  basedir = packageName + '-' + version
   into(basedir) {
     from packageDir
   }
