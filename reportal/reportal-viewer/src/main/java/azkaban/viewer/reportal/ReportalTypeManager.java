@@ -21,7 +21,6 @@ import java.util.Map;
 
 import azkaban.flow.CommonJobProperties;
 import azkaban.jobExecutor.JavaProcessJob;
-import azkaban.reportal.util.Reportal;
 import azkaban.utils.Props;
 
 public class ReportalTypeManager {
