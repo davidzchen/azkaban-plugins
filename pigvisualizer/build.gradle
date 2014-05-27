@@ -44,7 +44,7 @@ task copy(type: Copy, dependsOn: ['build', 'dustjs', 'lesscss']) {
 task dist(type: Tar, dependsOn: 'copy') {
   extension = 'tar.gz'
   compression = Compression.GZIP
-  basedir = packageName + '-' + version
+  String basedir = packageName + '-' + version
   into(basedir) {
     from packageDir
   }
