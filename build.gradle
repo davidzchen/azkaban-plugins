@@ -23,8 +23,7 @@ buildscript {
   }
   dependencies {
     classpath 'de.obqo.gradle:gradle-lesscss-plugin:1.0-1.3.3'
-    classpath 'org.mozilla:rhino:1.7R4'
-    classpath files('gradle/plugin/gradle-dustjs-plugin-1.0.jar')
+    classpath 'com.linkedin:gradle-dustjs-plugin:1.0.0'
   }
 }
 
@@ -32,23 +31,23 @@ buildscript {
  * Gets the version name from the latest Git tag
  */
 task createVersionFile() << {
-    String gitCommitHash = cmdCaller(['git', 'rev-parse', 'HEAD']);
-    String gitRepo = cmdCaller(['git', 'config', '--get', 'remote.origin.url']);
-    def date = new Date()
-    def formattedDate = date.format('yyyy-MM-dd hh:mm zzz')
+  String gitCommitHash = cmdCaller(['git', 'rev-parse', 'HEAD']);
+  String gitRepo = cmdCaller(['git', 'config', '--get', 'remote.origin.url']);
+  def date = new Date()
+  def formattedDate = date.format('yyyy-MM-dd hh:mm zzz')
 
-    String versionStr = version + '\n' +
-                        gitCommitHash + '\n' +
-                        gitRepo + '\n' +
-                        formattedDate + '\n'
+  String versionStr = version + '\n' +
+                      gitCommitHash + '\n' +
+                      gitRepo + '\n' +
+                      formattedDate + '\n'
 
-    File versionFile = file('build/package/version.file')
-    versionFile.parentFile.mkdirs()
-    versionFile.write(versionStr)
+  File versionFile = file('build/package/version.file')
+  versionFile.parentFile.mkdirs()
+  versionFile.write(versionStr)
 }
 
 // Configuration common to all projects.
-configure(allprojects) { project ->
+allprojects {
   repositories {
     mavenCentral()
     maven { url 'http://repo.springsource.org/plugins-release' }

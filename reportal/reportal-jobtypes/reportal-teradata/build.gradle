@@ -1,0 +1,7 @@
+dependencies {
+  compile(project(':reportal:reportal-common'))
+  compile(files('lib'))
+  compile('commons-dbcp:commons-dbcp:1.4')
+  compile('commons-pool')
+  compile('commons-lang')
+}
