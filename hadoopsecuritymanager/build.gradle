@@ -36,11 +36,14 @@ task copy(type: Copy, dependsOn: 'build') {
   }
 }
 
-task dist(type: Tar, dependsOn: 'copy') {
-  extension = 'tar.gz'
-  compression = Compression.GZIP
-  String basedir = packageName + '-' + version
-  into(basedir) {
-    from packageDir
+distributions {
+  main {
+    baseName = 'azkaban-hadoop-security-manager'
+    contents {
+      from { files('build/package') }
+    }
   }
 }
+
+distTar.dependsOn 'copy'
+distTar.extension = 'tar.gz'

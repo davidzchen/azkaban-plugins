@@ -31,6 +31,7 @@ allprojects {
 
 subprojects {
   apply plugin: 'java'
+  apply plugin: 'distribution'
   apply plugin: 'eclipse'
 
   /**
@@ -43,9 +44,9 @@ subprojects {
     def formattedDate = date.format('yyyy-MM-dd hh:mm zzz')
 
     String versionStr = version + '\n' +
-                        gitCommitHash + '\n' +
-                        gitRepo + '\n' +
-                        formattedDate + '\n'
+        gitCommitHash + '\n' +
+        gitRepo + '\n' +
+        formattedDate + '\n'
 
     File versionFile = file('build/package/version.file')
     versionFile.parentFile.mkdirs()
