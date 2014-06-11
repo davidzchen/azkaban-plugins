@@ -2,9 +2,19 @@ ext.baseName = 'azkaban'
 ext.pluginName = 'jobsummary'
 ext.version = '2.5.1'
 
+configurations {
+  all {
+    transitive = false
+  }
+}
+
 dependencies {
   compile(project(':hadoopsecuritymanager'))
   compile('javax.servlet:servlet-api:2.5')
+  compile('com.linkedin.azkaban:azkaban:2.5.0')
+  compile('log4j:log4j:1.2.16')
+
+  testCompile('junit:junit:4.11')
 }
 
 ext.packageName = baseName + '-' + pluginName

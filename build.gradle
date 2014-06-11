@@ -1,3 +1,13 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'de.obqo.gradle:gradle-lesscss-plugin:1.0-1.3.3'
+    classpath 'com.linkedin:gradle-dustjs-plugin:1.0.0'
+  }
+}
+
 /**
  * Helper that calls a command and returns the output.
  */
@@ -10,77 +20,42 @@ def cmdCaller = { commandln ->
   return stdout.toString().trim()
 }
 
-/**
- * Get the version name from git tag.
- */
-def getVersionName = { ->
-  return cmdCaller(['git', 'describe', '--tags', '--abbrev=0'])
-}
-
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath 'de.obqo.gradle:gradle-lesscss-plugin:1.0-1.3.3'
-    classpath 'com.linkedin:gradle-dustjs-plugin:1.0.0'
-  }
-}
-
-/*
- * Gets the version name from the latest Git tag
- */
-task createVersionFile() << {
-  String gitCommitHash = cmdCaller(['git', 'rev-parse', 'HEAD']);
-  String gitRepo = cmdCaller(['git', 'config', '--get', 'remote.origin.url']);
-  def date = new Date()
-  def formattedDate = date.format('yyyy-MM-dd hh:mm zzz')
-
-  String versionStr = version + '\n' +
-                      gitCommitHash + '\n' +
-                      gitRepo + '\n' +
-                      formattedDate + '\n'
-
-  File versionFile = file('build/package/version.file')
-  versionFile.parentFile.mkdirs()
-  versionFile.write(versionStr)
-}
-
-// Configuration common to all projects.
 allprojects {
   repositories {
     mavenCentral()
-    maven { url 'http://repo.springsource.org/plugins-release' }
-    mavenLocal()
-  }
-
-  apply plugin: 'java'
-  apply plugin: 'eclipse'
-
-  version = getVersionName()
-  archivesBaseName = 'azkaban'
-  check.dependsOn.remove(test)
-
-  configurations {
-    all {
-      transitive = false
+    maven {
+      url 'http://repo.springsource.org/plugins-release'
     }
-    compile {
-      description = 'compile classpath'
-    }
-    test {
-      extendsFrom compile
-    }
-  }
-
-  dependencies {
-    compile('com.linkedin.azkaban:azkaban:2.5.0')
-    compile('log4j:log4j:1.2.16')
-    testCompile('junit:junit:4.11')
   }
 }
 
-// Gradle wrapper task.
+subprojects {
+  apply plugin: 'java'
+  apply plugin: 'eclipse'
+
+  /**
+   * Gets the version name from the latest Git tag
+   */
+  task createVersionFile() << {
+    String gitCommitHash = cmdCaller(['git', 'rev-parse', 'HEAD']);
+    String gitRepo = cmdCaller(['git', 'config', '--get', 'remote.origin.url']);
+    def date = new Date()
+    def formattedDate = date.format('yyyy-MM-dd hh:mm zzz')
+
+    String versionStr = version + '\n' +
+                        gitCommitHash + '\n' +
+                        gitRepo + '\n' +
+                        formattedDate + '\n'
+
+    File versionFile = file('build/package/version.file')
+    versionFile.parentFile.mkdirs()
+    versionFile.write(versionStr)
+  }
+}
+
+/**
+ * Gradle wrapper.
+ */
 task wrapper(type: Wrapper) {
-  gradleVersion = '1.11'
+  gradleVersion = '1.12'
 }

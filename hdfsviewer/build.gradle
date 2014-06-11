@@ -2,6 +2,12 @@ ext.baseName = 'azkaban'
 ext.pluginName = 'hdfsviewer'
 ext.version = '2.5.1'
 
+configurations {
+  all {
+    transitive = false
+  }
+}
+
 dependencies {
   compile(project(':hadoopsecuritymanager'))
   compile('org.apache.hadoop:hadoop-core:1.2.1')
@@ -14,6 +20,10 @@ dependencies {
   compile('javax.servlet:servlet-api:2.5')
   compile('org.xerial.snappy:snappy-java:1.0.5')
   compile('voldemort:voldemort:0.96')
+  compile('com.linkedin.azkaban:azkaban:2.5.0')
+  compile('log4j:log4j:1.2.16')
+
+  testCompile('junit:junit:4.11')
 }
 
 ext.packageName = baseName + '-' + pluginName
