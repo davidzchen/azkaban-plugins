@@ -1,7 +1,3 @@
-ext.baseName = 'azkaban'
-ext.pluginName = 'jobsummary'
-ext.version = '2.5.1'
-
 configurations {
   all {
     transitive = false
@@ -17,28 +13,28 @@ dependencies {
   testCompile('junit:junit:4.11')
 }
 
-ext.packageName = baseName + '-' + pluginName
-ext.packageDir = 'build/package/' + packageName
-ext.packageLibDir = packageDir + '/lib'
+task copyLibs(type: Copy, dependsOn: 'build') {
+  from('build/libs')
+  into('build/package/lib')
+}
 
-task copy(type: Copy, dependsOn: 'build') {
-  mkdir packageDir
-  mkdir packageLibDir
-  copy {
-    from('build/libs')
-    into packageLibDir
-  }
-  copy {
-    from configurations.compile
-    into packageLibDir
+task copyDeps(type: Copy, dependsOn: 'build') {
+  from configurations.compile
+  into('build/package/lib')
+}
+
+task copy(dependsOn: ['copyLibs', 'copyDeps']) {
+}
+
+distributions {
+  main {
+    baseName = 'azkaban-job-summary'
+    contents {
+      from { files('build/package') }
+    }
   }
 }
 
-task dist(type: Tar, dependsOn: 'copy') {
-  extension = 'tar.gz'
-  compression = Compression.GZIP
-  String basedir = packageName + '-' + version
-  into(basedir) {
-    from packageDir
-  }
-}
+distTar.dependsOn 'copy'
+distTar.extension = 'tar.gz'
+distZip.dependsOn 'copy'

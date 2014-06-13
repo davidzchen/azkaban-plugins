@@ -1,10 +1,6 @@
 apply plugin: 'lesscss'
 apply plugin: 'dustjs'
 
-ext.baseName = 'azkaban'
-ext.pluginName = 'pigvisualizer'
-ext.version = '2.5.1'
-
 configurations {
   all {
     transitive = false
@@ -34,28 +30,43 @@ dustjs {
   dest = 'build/web/js'
 }
 
-ext.packageName = baseName + '-' + pluginName
-ext.packageDir = 'build/package/' + packageName
-ext.packageLibDir = packageDir + '/lib'
+task copyWeb(type: Copy) {
+  from('src/web')
+  into('build/package/web')
+}
 
-task copy(type: Copy, dependsOn: ['build', 'dustjs', 'lesscss']) {
-  mkdir packageDir
-  mkdir packageLibDir
-  copy {
-    from('build/libs')
-    into packageLibDir
-  }
-  copy {
-    from configurations.compile
-    into packageLibDir
+task copyLess(type: Copy, dependsOn: ['lesscss', 'copyWeb']) {
+  from('build/less')
+  into('build/package/web/css')
+}
+
+task copyDust(type: Copy, dependsOn: ['dustjs', 'copyWeb']) {
+  from('build/dust')
+  into('build/package/web/js')
+}
+
+task copyLibs(type: Copy, dependsOn: 'build') {
+  from('build/libs')
+  into('build/package/lib')
+}
+
+task copyDeps(type: Copy, dependsOn: 'build') {
+  from configurations.compile
+  into('build/package/lib')
+}
+
+task copy(dependsOn: ['copyDust', 'copyLess', 'copyLibs', 'copyDeps']) {
+}
+
+distributions {
+  main {
+    baseName = 'azkaban-pig-visualizer'
+    contents {
+      from { files('build/package') }
+    }
   }
 }
 
-task dist(type: Tar, dependsOn: 'copy') {
-  extension = 'tar.gz'
-  compression = Compression.GZIP
-  String basedir = packageName + '-' + version
-  into(basedir) {
-    from packageDir
-  }
-}
+distTar.dependsOn 'copy'
+distTar.extension = 'tar.gz'
+distZip.dependsOn 'copy'

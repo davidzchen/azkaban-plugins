@@ -26,28 +26,33 @@ dependencies {
   testCompile('junit:junit:4.11')
 }
 
-ext.packageName = baseName + '-' + pluginName
-ext.packageDir = 'build/package/' + packageName
-ext.packageLibDir = packageDir + '/lib'
+task copyLibs(type: Copy, dependsOn: 'build') {
+  from('build/libs')
+  into('build/package/lib')
+}
 
-task copy(type: Copy, dependsOn: 'build') {
-  mkdir packageDir
-  mkdir packageLibDir
-  copy {
-    from('build/libs')
-    into packageLibDir
-  }
-  copy {
-    from configurations.compile
-    into packageLibDir
+task copyDeps(type: Copy, dependsOn: 'build') {
+  from configurations.compile
+  into('build/package/lib')
+}
+
+task copyPackage(type: Copy) {
+  from('src/package')
+  into('build/package')
+}
+
+task copy(dependsOn: ['copyLibs', 'copyDeps', 'copyPackage']) {
+}
+
+distributions {
+  main {
+    baseName = 'azkaban-hdfs-viewer'
+    contents {
+      from { files('build/package') }
+    }
   }
 }
 
-task dist(type: Tar, dependsOn: 'copy') {
-  extension = 'tar.gz'
-  compression = Compression.GZIP
-  String basedir = packageName + '-' + version
-  into(basedir) {
-    from packageDir
-  }
-}
+distTar.dependsOn 'copy'
+distTar.extension = 'tar.gz'
+distZip.dependsOn 'copy'

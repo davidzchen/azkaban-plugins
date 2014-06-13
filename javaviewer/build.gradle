@@ -1,9 +1,5 @@
 apply plugin: 'dustjs'
 
-ext.baseName = 'azkaban'
-ext.pluginName = 'javaviewer'
-ext.version = '2.5.1'
-
 configurations {
   all {
     transitive = false
@@ -22,31 +18,41 @@ dependencies {
 
 dustjs {
   source = fileTree('src/main/tl')
-  dest = 'build/web/js'
+  dest = 'build/dust'
 }
 
-ext.packageName = baseName + '-' + pluginName
-ext.packageDir = 'build/package/' + packageName
-ext.packageLibDir = packageDir + '/lib'
+task copyWeb(type: Copy) {
+  from('src/web')
+  into('build/package/web')
+}
 
-task copy(type: Copy, dependsOn: ['build', 'dustjs']) {
-  mkdir packageDir
-  mkdir packageLibDir
-  copy {
-    from('build/libs')
-    into packageLibDir
-  }
-  copy {
-    from configurations.compile
-    into packageLibDir
+task copyDust(type: Copy, dependsOn: ['dustjs', 'copyWeb']) {
+  from('build/dust')
+  into('build/package/web/js')
+}
+
+task copyLibs(type: Copy, dependsOn: 'build') {
+  from('build/libs')
+  into('build/package/lib')
+}
+
+task copyDeps(type: Copy, dependsOn: 'build') {
+  from configurations.compile
+  into('build/package/lib')
+}
+
+task copy(dependsOn: ['copyDust', 'copyLibs', 'copyDeps']) {
+}
+
+distributions {
+  main {
+    baseName = 'azkaban-java-viewer'
+    contents {
+      from { files('build/package') }
+    }
   }
 }
 
-task dist(type: Tar, dependsOn: 'copy') {
-  extension = 'tar.gz'
-  compression = Compression.GZIP
-  String basedir = packageName + '-' + version
-  into(basedir) {
-    from packageDir
-  }
-}
+distTar.dependsOn 'copy'
+distTar.extension = 'tar.gz'
+distZip.dependsOn 'copy'
