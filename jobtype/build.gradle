@@ -2,20 +2,29 @@ configurations {
   all {
     transitive = false
   }
+  pig {
+    extendsFrom compile
+  }
+  hive {
+    extendsFrom compile
+  }
 }
 
 dependencies {
-  compile(project(':hadoopsecuritymanager'))
+  compile(project(':hadoop-security-manager'))
+  compile('com.linkedin.azkaban:azkaban:2.5.0')
   compile('commons-lang:commons-lang:2.4')
   compile('org.apache.hadoop:hadoop-core:1.2.1')
-  compile('org.apache.hive:hive-common:0.12.0')
-  compile('org.apache.hive:hive-cli:0.12.0')
-  compile('org.apache.hive:hive-common:0.12.0')
-  compile('org.apache.hive:hive-exec:0.12.0')
-  compile('org.apache.hive:hive-metastore:0.12.0')
-  compile('org.apache.hive:hive-service:0.12.0')
-  compile('org.apache.pig:pig:0.12.0')
-  compile('com.linkedin.azkaban:azkaban:2.5.0')
+
+  hive('org.apache.hive:hive-common:0.12.0')
+  hive('org.apache.hive:hive-cli:0.12.0')
+  hive('org.apache.hive:hive-common:0.12.0')
+  hive('org.apache.hive:hive-exec:0.12.0')
+  hive('org.apache.hive:hive-metastore:0.12.0')
+  hive('org.apache.hive:hive-service:0.12.0')
+
+  pig('org.apache.pig:pig:0.12.0')
+
   compile('log4j:log4j:1.2.16')
 
   testCompile('junit:junit:4.11')
