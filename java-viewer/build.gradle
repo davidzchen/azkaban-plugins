@@ -7,7 +7,7 @@ configurations {
 }
 
 dependencies {
-  compile(project(':hadoopsecuritymanager'))
+  compile(project(':hadoop-security-manager'))
   compile(project(':jobtype'))
   compile('javax.servlet:servlet-api:2.5')
   compile('com.linkedin.azkaban:azkaban:2.5.0')
