@@ -1,14 +1,14 @@
-configurations {
-  all {
-    transitive = false
-  }
-  pig {
-    extendsFrom compile
-  }
-  hive {
-    extendsFrom compile
+
+subprojects {
+  configurations {
+    all {
+      transitive = false
+    }
   }
 }
+
+project(':jobtype-common') {
+
 
 dependencies {
   compile(project(':hadoop-security-manager'))

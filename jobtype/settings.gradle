@@ -1,0 +1,7 @@
+include 'hadoopJava'
+include 'hive'
+include 'hive-0.8.1'
+include 'java'
+include 'jobtype-common'
+include 'jobtype-examples'
+include 'pig'
